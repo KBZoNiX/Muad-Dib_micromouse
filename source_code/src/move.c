@@ -1144,6 +1144,12 @@ static void move_side(enum movement movement) {
     }
   }
 
+  /*
+   * El heading objetivo ya apunta a la salida del giro: sin lock en
+   * el tramo previo y en el arco (se reactiva en el tramo final).
+   */
+  set_heading_lock_enabled(false);
+
   if (kinematics.turns[movement].start > 0) {
     if (abs(start_distance_offset) > kinematics.turns[movement].start / 2) {
       start_distance_offset = start_distance_offset > 0 ? kinematics.turns[movement].start / 2 : -kinematics.turns[movement].start / 2;
@@ -1159,6 +1165,7 @@ static void move_side(enum movement movement) {
 
   set_front_sensors_angle_correction(false);
   set_side_sensors_correction(false);
+  set_heading_lock_enabled(true);
 
   switch (movement) {
     case MOVE_LEFT_TO_45:
